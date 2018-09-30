@@ -1,5 +1,6 @@
 import PyPDF2
 import re
+import os
 import csv
 from collections import namedtuple 
 Record = namedtuple('Record', 'file_path, word, page, occurence')
@@ -25,6 +26,9 @@ class PdfSearcher:
         """Creates a record for each word found on each page. Scans the pdf file (passed through 
         with full path) and calls the match patterns method for each page. Each match that match_patterns
         returns is stored as a record in self.records."""
+        if not os.path.isfile(pdf_path):
+            raise ValueError
+            
         with open(pdf_path, 'rb') as pdf:
             pdf_reader = PyPDF2.PdfFileReader(pdf)
             for page_num, page in enumerate(pdf_reader.pages, 1):
@@ -41,6 +45,9 @@ class PdfSearcher:
 
     def to_csv(self, file_path, first=True):
         """Creates or appends a csv file containing all records that were found."""
+        if not os.path.isfile(file_path):
+            raise ValueError
+
         with open(file_path, 'a', newline='') as file:
             writer = csv.writer(file, dialect='excel', delimiter=",")
             if first:
