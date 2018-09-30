@@ -13,7 +13,12 @@ class PdfSearcher:
 
     def __init__(self, *args):
         """The positional arguments passed to initiliase the object are the search words it will use."""
-        self.search_words = [re.compile(arg) for arg in args]
+        words = []
+        for arg in args:
+            words.append(arg.lower())
+            words.append(arg.Upper())
+            words.append(arg.Capitilize())
+        self.search_words = [re.compile(word) for word in words]
         self.records = []
 
     def search_pdf(self, pdf_path):
@@ -37,7 +42,7 @@ class PdfSearcher:
     def to_csv(self, file_path, first=True):
         """Creates or appends a csv file containing all records that were found."""
         with open(file_path, 'a') as file:
-            writer = csv.writer(file, delimiter=",")
+            writer = csv.writer(file, dialect='excel', delimiter=",")
             if first:
                 writer.writerow(['file_path', 'word', 'page', 'occurence'])
             for record in self.records:
