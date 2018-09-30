@@ -16,8 +16,8 @@ class PdfSearcher:
         words = []
         for arg in args:
             words.append(arg.lower())
-            words.append(arg.Upper())
-            words.append(arg.Capitilize())
+            words.append(arg.lpper())
+            words.append(arg.capitilize())
         self.search_words = [re.compile(word) for word in words]
         self.records = []
 
