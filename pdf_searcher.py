@@ -16,8 +16,8 @@ class PdfSearcher:
         words = []
         for arg in args:
             words.append(arg.lower())
-            words.append(arg.lpper())
-            words.append(arg.capitilize())
+            words.append(arg.upper())
+            words.append(arg.capitalize())
         self.search_words = [re.compile(word) for word in words]
         self.records = []
 
@@ -41,7 +41,7 @@ class PdfSearcher:
 
     def to_csv(self, file_path, first=True):
         """Creates or appends a csv file containing all records that were found."""
-        with open(file_path, 'a') as file:
+        with open(file_path, 'a', newline='') as file:
             writer = csv.writer(file, dialect='excel', delimiter=",")
             if first:
                 writer.writerow(['file_path', 'word', 'page', 'occurence'])
