@@ -27,7 +27,8 @@ class PdfSearcher:
         with full path) and calls the match patterns method for each page. Each match that match_patterns
         returns is stored as a record in self.records."""
         if not os.path.isfile(pdf_path):
-            raise ValueError
+            raise ValueError('{} is not a valid file, please provide the correct path.'
+                            .format(pdf_path))
             
         with open(pdf_path, 'rb') as pdf:
             pdf_reader = PyPDF2.PdfFileReader(pdf)
@@ -45,8 +46,9 @@ class PdfSearcher:
 
     def to_csv(self, file_path, first=True):
         """Creates or appends a csv file containing all records that were found."""
-        if not os.path.isfile(file_path):
-            raise ValueError
+        if not os.path.isdir(os.path.dirname(file_path)):
+            raise ValueError('{} is not a valid folder, please provide the correct path.'
+                            .format(os.path.dirname(file_path)))
 
         with open(file_path, 'a', newline='') as file:
             writer = csv.writer(file, dialect='excel', delimiter=",")

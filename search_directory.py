@@ -12,10 +12,10 @@ def main():
                         '--print_only', 
                         help='Do not perform any action on the pdf s. just print them out.',
                         action='store_true')
-    parser.add_argument('-n', 
-                        '--nargs', 
+    parser.add_argument('-s', 
+                        '--search_words', 
                         nargs='+', 
-                        help='Enter flag "-l" followed by all the words you want to look for.',
+                        help='Enter flag "-s" followed by all the words you want to look for.',
                         required=True)
     args = parser.parse_args()
     
@@ -32,13 +32,15 @@ def main():
                 return
     
     print_progress_bar(0, len(pdfs))
-    searcher = PdfSearcher(*list(args.nargs))
+    searcher = PdfSearcher(*list(args.search_words))
     for i, pdf in enumerate(pdfs, 1):
         try:
             searcher.search_pdf(pdf)
         except ValueError:
             logging.warning('Could not search {}'.format(pdf))
         print_progress_bar(i, len(pdfs))
+
+    searcher.to_csv(output)
 
 def input_path(folder=None, msg=''):
     if folder is None:
@@ -76,3 +78,6 @@ def print_progress_bar (iteration,
     # Print New Line on Complete
     if iteration == total: 
         print()
+
+if __name__ == '__main__':
+    main()
